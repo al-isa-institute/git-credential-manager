@@ -1,0 +1,61 @@
+{import React, { useState, useEffect } from "react";
+import { base44 } from "@/api/base44Client";
+import { useQuery } from "@tanstack/react-query";
+import WelcomeBanner from "../components/dashboard/WelcomeBanner";
+import StatsCards from "../components/dashboard/StatsCards";
+import LearningPaths from "../components/dashboard/LearningPaths";
+import BadgeDisplay from "../components/gamification/BadgeDisplay";
+import AIRecommendations from "../components/dashboard/AIRecommendations";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Brain, Sparkles, ArrowRight, Users, Trophy, TrendingUp, Target, Lock, Mail, Shield, Volume2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "@/utils";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import EducatorGallery from "../components/educators/EducatorGallery";
+import GamificationWidget from "../components/gamification/GamificationWidget";
+import StreakTracker from "../components/gamification/StreakTracker";
+import TextToSpeech from "../components/ben/TextToSpeech";
+import LessonLeadershipSelector from "../components/lessons/LessonLeadershipSelector";
+import LessonLeadershipStats from "../components/analytics/LessonLeadershipStats";
+import DynamicLearningPath from "../components/learning/DynamicLearningPath";
+import { toast } from "sonner";
+import { getEducatorProfile } from "../components/educators/EducatorProfiles";
+import { sanitizeProfileText } from "../components/educators/sanitizeContent";
+
+export default function Dashboard() {
+  const [user, setUser] = useState(null);
+  const [gamData, setGamData] = useState(null);
+  const [accessRequested, setAccessRequested] = useState(false);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        if (!base44?.auth?.me) {
+          console.error("Base44 client not ready");
+          return;
+        }
+        
+        const userData = await base44.auth.me();
+        setUser(userData);
+        
+        if (userData && base44?.entities?.Gamification) {
+          const gamificationData = await base44.entities.Gamification.filter({ user_email: userData.email });
+          if (gamificationData.length > 0) {
+            setGamData(gamificationData[0]);
+          }
+        }
+      } catch (error) {
+        console.error("Error loading user:", error);
+      }
+    };
+    loadUser();
+  }, []);
+
+  // Request access function
+  const requestAccess = async () => {
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {}
+}
